@@ -5,15 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>學生成員自我介紹影片</title>
     
-    <!-- 載入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            darkMode: 'class', // 啟用手動日夜切換模式
+            darkMode: 'class', 
         }
     </script>
 
-    <!-- 載入 React, ReactDOM 與 Babel (讓瀏覽器能直接解析 JSX) -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -24,7 +22,6 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        // === 內建 SVG 圖示庫 (取代原先的 lucide-react 套件) ===
         const Icon = ({ children, className = "w-6 h-6" }) => (
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
                 {children}
@@ -43,9 +40,8 @@
         const Globe = ({ className }) => <Icon className={className}><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></Icon>;
         const Volume2 = ({ className }) => <Icon className={className}><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></Icon>;
         const VolumeX = ({ className }) => <Icon className={className}><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></Icon>;
+        const ExternalLink = ({ className }) => <Icon className={className}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></Icon>;
 
-
-        // === 多國語言字典 (i18n) ===
         const dict = {
             zh: {
                 systemLoading: '系統載入中...',
@@ -57,17 +53,17 @@
                 codename: '代號',
                 playerProfile: '角色檔案',
                 statusParams: '能力數值參數',
-                playVideo: '播放影片',
+                playVideo: '重新載入影片',
                 returnClose: '返回 / 關閉',
+                openInYoutube: '在 YouTube 開啟',
                 browserNotSupport: '你的瀏覽器不支援 HTML 影片播放。',
                 voiceGuide: '歡迎來到 PMCS 11 4 2，學生成員自我介紹系統。畫面中顯示了全班同學的角色卡片，請點擊任意一位成員，即可查看他的詳細能力數值與自我介紹影片。',
-                // 系所與稱號
-                dept_cs: '資訊工程學系', title_cs: '終端機駭客',
-                dept_vcd: '視覺傳達設計系', title_vcd: '幻境構築者',
-                dept_ba: '企業管理學系', title_ba: '戰術資源官',
-                dept_fl: '外國語文學系', title_fl: '異國語譯者',
-                dept_ma: '多媒體動畫系', title_ma: '像素操縱師',
-                // 能力值
+                dept_ib: '國企系', title_ib: '商業談判家',
+                dept_mem: '管院全英碩士', title_mem: '策略指揮官',
+                dept_mb: '管院學士班', title_mb: '資源管理員',
+                dept_ic: '國比系', title_ic: '國際觀察家',
+                dept_cs: '資工系', title_cs: '終端機駭客',
+                dept_ed: '教院學士班', title_ed: '智慧啟蒙者',
                 stat_stamina: '爆肝耐力',
                 stat_social: '社交能量',
                 stat_learning: '知識吸收',
@@ -84,17 +80,17 @@
                 codename: 'CODENAME',
                 playerProfile: 'PLAYER PROFILE',
                 statusParams: 'STATUS PARAMETERS',
-                playVideo: 'Play Video',
+                playVideo: 'Reload Video',
                 returnClose: 'Return / Close',
+                openInYoutube: 'Open in YouTube',
                 browserNotSupport: 'Your browser does not support HTML video playback.',
                 voiceGuide: 'Welcome to the PMCS 11 4 2 Student Self-Introduction System. The screen displays character cards for all class members. Please click on any member to view their detailed stats and introduction video.',
-                // Departments & Titles
+                dept_ib: 'Intl. Business', title_ib: 'Global Trader',
+                dept_mem: 'Mgmt English Master', title_mem: 'Strategy Commander',
+                dept_mb: 'Mgmt Bachelor', title_mb: 'Resource Manager',
+                dept_ic: 'Intl. Comparative', title_ic: 'Global Observer',
                 dept_cs: 'Computer Science', title_cs: 'Terminal Hacker',
-                dept_vcd: 'Visual Comm. Design', title_vcd: 'Illusion Builder',
-                dept_ba: 'Business Admin', title_ba: 'Tactical Officer',
-                dept_fl: 'Foreign Languages', title_fl: 'Alien Translator',
-                dept_ma: 'Multimedia Animation', title_ma: 'Pixel Manipulator',
-                // Stats
+                dept_ed: 'Education', title_ed: 'Wisdom Mentor',
                 stat_stamina: 'Stamina',
                 stat_social: 'Social Energy',
                 stat_learning: 'Learning Rate',
@@ -103,43 +99,47 @@
             }
         };
 
-        // === 假資料生成區 ===
         const departmentsData = [
-            { key: 'cs', icon: Cpu, color: 'text-emerald-600 dark:text-emerald-400', barColor: 'bg-emerald-500 dark:bg-emerald-400' },
-            { key: 'vcd', icon: Zap, color: 'text-fuchsia-600 dark:text-fuchsia-400', barColor: 'bg-fuchsia-500 dark:bg-fuchsia-400' },
-            { key: 'ba', icon: Shield, color: 'text-amber-600 dark:text-amber-400', barColor: 'bg-amber-500 dark:bg-amber-400' },
-            { key: 'fl', icon: Book, color: 'text-blue-600 dark:text-blue-400', barColor: 'bg-blue-500 dark:bg-blue-400' },
-            { key: 'ma', icon: MonitorPlay, color: 'text-cyan-600 dark:text-cyan-400', barColor: 'bg-cyan-500 dark:bg-cyan-400' },
+            { key: 'ib', icon: Shield, color: 'text-blue-600 dark:text-blue-400', barColor: 'bg-blue-500 dark:bg-blue-400' },
+            { key: 'mem', icon: Zap, color: 'text-amber-600 dark:text-amber-400', barColor: 'bg-amber-500 dark:bg-amber-400' },
+            { key: 'mb', icon: Book, color: 'text-emerald-600 dark:text-emerald-400', barColor: 'bg-emerald-500 dark:bg-emerald-400' },
+            { key: 'ic', icon: Globe, color: 'text-fuchsia-600 dark:text-fuchsia-400', barColor: 'bg-fuchsia-500 dark:bg-fuchsia-400' },
+            { key: 'cs', icon: Cpu, color: 'text-cyan-600 dark:text-cyan-400', barColor: 'bg-cyan-500 dark:bg-cyan-400' },
+            { key: 'ed', icon: MonitorPlay, color: 'text-rose-600 dark:text-rose-400', barColor: 'bg-rose-500 dark:bg-rose-400' },
         ];
 
-        const generatePlayers = (count) => {
-            return Array.from({ length: count }, (_, i) => {
-                const dept = departmentsData[i % departmentsData.length];
-                return {
-                    id: i + 1,
-                    nameKey: `學生 ${i + 1} 號`, 
-                    nickname: `Player_${Math.random().toString(36).substring(2, 6).toUpperCase()}`,
-                    department: dept,
-                    level: Math.floor(Math.random() * 50) + 1,
-                    stats: {
-                        stat_stamina: Math.floor(Math.random() * 60) + 40,
-                        stat_social: Math.floor(Math.random() * 60) + 40,
-                        stat_learning: Math.floor(Math.random() * 60) + 40,
-                        stat_luck: Math.floor(Math.random() * 60) + 40,
-                        stat_stealth: Math.floor(Math.random() * 60) + 40,
-                    },
-                    avatarUrl: `https://api.dicebear.com/7.x/bottts/svg?seed=Student${i + 1}&backgroundColor=transparent`,
-                    videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4" 
-                };
-            });
+        const REAL_STUDENTS_DATA = [
+            { nameZh: "保羅", nameEn: "Paul", youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", deptKey: "ib", groupId: "G1" },
+            { nameZh: "約舒亞", nameEn: "Joshua", youtubeUrl: "https://youtu.be/ZsNmL6w6d8I?si=gphqhBkD4SWZ9GVu", deptKey: "mem", groupId: "G1" },
+            { nameZh: "陳思穎", nameEn: "Noks", youtubeUrl: "https://youtu.be/fPH_-X2Hvj8?si=_lCaCE0nC9hox07Y", deptKey: "mem", groupId: "G1" },
+            { nameZh: "古佳奈", nameEn: "Gcebile", youtubeUrl: "https://youtu.be/SBsd9RzdXbk?si=mvH_xOt8rswVq507", deptKey: "mem", groupId: "G1" },
+            { nameZh: "陳清雅", nameEn: "Tamera", youtubeUrl: "https://youtu.be/請替換成網址5", deptKey: "mem", groupId: "G1" },
+            { nameZh: "林庭仔", nameEn: "Tina", youtubeUrl: "https://youtu.be/_wj7G2MduI8?si=h9AVLXM8wCqP1imS", deptKey: "ib", groupId: "G1" },
+            { nameZh: "莊詠捷", nameEn: "Zoe", youtubeUrl: "https://youtu.be/Yc69rPhkS7Y?si=rDZEwjy2N7pSpz7Q", deptKey: "mb", groupId: "G1" },
+            { nameZh: "盧靈均", nameEn: "Ko Ko", youtubeUrl: "https://youtu.be/MTGdolS2o8M?si=vv1oibeXmfO-Bwll", deptKey: "mem", groupId: "G2" },
+            { nameZh: "孫女可馨", nameEn: "Emily", youtubeUrl: "https://youtu.be/請替換成網址9", deptKey: "mem", groupId: "G2" },
+            { nameZh: "謝思涵", nameEn: "Giecell", youtubeUrl: "https://youtu.be/8gN0wo-f6yM?si=5RVtsmJyDEpLrDeU", deptKey: "mem", groupId: "G2" },
+            { nameZh: "張媚雅", nameEn: "Amelia", youtubeUrl: "https://youtu.be/dT4HK8FLRP4?si=Y45fJp_NIOwGzANU", deptKey: "ic", groupId: "G2" },
+            { nameZh: "黃田婷", nameEn: "Jovanie", youtubeUrl: "https://youtu.be/YxqhaTKQUws?si=yX-EsKdWzPZf4NwV", deptKey: "cs", groupId: "G2" },
+            { nameZh: "瑪麗", nameEn: "Marie", youtubeUrl: "https://youtu.be/godIwATTsBk?si=7TTywCTjy8S-sajV", deptKey: "ib", groupId: "G2" },
+            { nameZh: "楊佳豫", nameEn: "Anson", youtubeUrl: "https://youtu.be/6pt58iu14Ko?si=JFJQlMCMNyfqfHhB", deptKey: "ib", groupId: "G3" },
+            { nameZh: "李安音", nameEn: "Lili", youtubeUrl: "https://youtu.be/qG6rXa0wsh0?si=FNkVqjnyAYDC5cNL", deptKey: "mem", groupId: "G3" },
+            { nameZh: "林凱", nameEn: "Kai", youtubeUrl: "https://youtu.be/QFQMgIj2k-w?si=Rq15ack3aqXEyVQv", deptKey: "mem", groupId: "G3" },
+            { nameZh: "杜杰迪", nameEn: "JD", youtubeUrl: "https://youtu.be/nzFWvhcSwxM?si=3P8UINMPHE373D0Z", deptKey: "mem", groupId: "G3" },
+            { nameZh: "李宥儀", nameEn: "Ue", youtubeUrl: "https://youtu.be/e35QPEg3Vcg?si=I-AUDff3aYgHql8C", deptKey: "ed", groupId: "G3" },
+            { nameZh: "丹尼爾", nameEn: "Danny", youtubeUrl: "https://youtu.be/Zw66yGQdvnw?si=eCvYRiHWIVv_iO4x", deptKey: "ib", groupId: "G3" }
+        ];
+
+        const getYoutubeId = (url) => {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
         };
 
-        const CLASS_PLAYERS = generatePlayers(19);
-
-        // === 主程式組件 ===
         function App() {
             const [selectedPlayer, setSelectedPlayer] = useState(null);
             const [isLoading, setIsLoading] = useState(true);
+            const [classPlayers, setClassPlayers] = useState([]);
             
             const [lang, setLang] = useState('zh');
             const [isDarkMode, setIsDarkMode] = useState(true);
@@ -148,7 +148,35 @@
             const t = dict[lang];
 
             useEffect(() => {
-                const timer = setTimeout(() => setIsLoading(false), 1500);
+                const playersData = REAL_STUDENTS_DATA.map((student, i) => {
+                    const dept = departmentsData.find(d => d.key === student.deptKey) || departmentsData[0];
+                    const youtubeId = getYoutubeId(student.youtubeUrl);
+
+                    return {
+                        id: i + 1,
+                        nameZh: student.nameZh, 
+                        nameEn: student.nameEn,
+                        groupId: student.groupId,
+                        nickname: `Player_${Math.random().toString(36).substring(2, 6).toUpperCase()}`,
+                        department: dept,
+                        level: Math.floor(Math.random() * 50) + 1,
+                        stats: {
+                            stat_stamina: Math.floor(Math.random() * 60) + 40,
+                            stat_social: Math.floor(Math.random() * 60) + 40,
+                            stat_learning: Math.floor(Math.random() * 60) + 40,
+                            stat_luck: Math.floor(Math.random() * 60) + 40,
+                            stat_stealth: Math.floor(Math.random() * 60) + 40,
+                        },
+                        youtubeId: youtubeId,
+                        avatarUrl: youtubeId 
+                            ? `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg` 
+                            : `https://api.dicebear.com/7.x/bottts/svg?seed=Student${i + 1}&backgroundColor=transparent`,
+                        videoUrl: student.youtubeUrl 
+                    };
+                });
+                
+                setClassPlayers(playersData);
+                const timer = setTimeout(() => setIsLoading(false), 1000);
                 return () => clearTimeout(timer);
             }, []);
 
@@ -227,13 +255,13 @@
                                 {lang === 'zh' ? "STUDENTS' SELF-INTRODUCTION VIDEOS" : t.mainTitle}
                             </h1>
                             <p className="mt-4 text-slate-500 dark:text-slate-400 flex flex-wrap items-center justify-center gap-2 px-4">
-                                <Crosshair className="w-4 h-4" /> {t.subtitle} ({CLASS_PLAYERS.length} {t.registered})
+                                <Crosshair className="w-4 h-4" /> {t.subtitle} ({classPlayers.length} {t.registered})
                             </p>
                         </header>
 
                         <main className="relative z-10 max-w-7xl mx-auto px-4 py-12">
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
-                                {CLASS_PLAYERS.map((player) => (
+                                {classPlayers.map((player) => (
                                     <button
                                         key={player.id}
                                         onClick={() => setSelectedPlayer(player)}
@@ -242,17 +270,20 @@
                                         <div className="aspect-square bg-slate-100 dark:bg-slate-800 relative overflow-hidden">
                                             <img 
                                                 src={player.avatarUrl} 
-                                                alt={player.nameKey}
-                                                className="w-full h-full object-cover p-2 group-hover:scale-110 transition-transform duration-500 mix-blend-multiply dark:mix-blend-normal"
+                                                alt={player.nameZh}
+                                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                             />
-                                            <div className="absolute inset-0 border-[4px] border-transparent group-hover:border-cyan-500/30 transition-colors duration-300"></div>
+                                            <div className="absolute top-2 right-2 z-20 bg-black/60 backdrop-blur border border-white/20 text-white text-[10px] font-bold px-2 py-1 rounded">
+                                                Team {player.groupId}
+                                            </div>
+                                            <div className="absolute inset-0 border-[4px] border-transparent group-hover:border-cyan-500/30 transition-colors duration-300 z-10"></div>
                                             <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white dark:from-slate-900 to-transparent transition-colors duration-500"></div>
                                         </div>
                                         
                                         <div className="p-3 relative z-10 text-left">
                                             <div className="text-xs text-slate-500 dark:text-slate-500 mb-1">{t.id}: #{player.id.toString().padStart(3, '0')}</div>
                                             <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors truncate">
-                                                {lang === 'en' ? `Student ${player.id}` : player.nameKey}
+                                                {lang === 'en' ? player.nameEn : player.nameZh}
                                             </h3>
                                             <div className={`text-[10px] mt-1 flex items-center gap-1 ${player.department.color}`}>
                                                 <player.department.icon className="w-3 h-3" />
@@ -279,10 +310,10 @@
             );
         }
 
-        // === 角色詳細資料組件 ===
         function PlayerModal({ player, onClose, t, lang }) {
             const DeptIcon = player.department.icon;
             const videoRef = useRef(null);
+            const iframeRef = useRef(null);
 
             useEffect(() => {
                 document.body.style.overflow = 'hidden';
@@ -323,17 +354,29 @@
                                     <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
                                     REC // INTRO_VIDEO
                                 </div>
-                                <div className="aspect-video w-full bg-slate-200 dark:bg-slate-950">
-                                    <video 
-                                        ref={videoRef}
-                                        className="w-full h-full object-cover mix-blend-multiply dark:mix-blend-normal"
-                                        controls
-                                        autoPlay
-                                        poster={player.avatarUrl}
-                                    >
-                                        <source src={player.videoUrl} type="video/mp4" />
-                                        {t.browserNotSupport}
-                                    </video>
+                                <div className="aspect-video w-full bg-slate-200 dark:bg-slate-950 relative">
+                                    {player.youtubeId ? (
+                                        <iframe 
+                                            ref={iframeRef}
+                                            className="absolute top-0 left-0 w-full h-full"
+                                            src={`https://www.youtube.com/embed/${player.youtubeId}?autoplay=1&rel=0`} 
+                                            title="YouTube video player" 
+                                            frameBorder="0" 
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                            allowFullScreen>
+                                        </iframe>
+                                    ) : (
+                                        <video 
+                                            ref={videoRef}
+                                            className="w-full h-full object-cover mix-blend-multiply dark:mix-blend-normal"
+                                            controls
+                                            autoPlay
+                                            poster={player.avatarUrl}
+                                        >
+                                            <source src={player.videoUrl} type="video/mp4" />
+                                            {t.browserNotSupport}
+                                        </video>
+                                    )}
                                 </div>
                             </div>
 
@@ -346,19 +389,18 @@
                                     <div className="mb-6 pr-8">
                                         <h4 className="text-slate-500 dark:text-slate-400 text-sm tracking-widest mb-1">{t.playerProfile}</h4>
                                         <h2 className="text-3xl font-black text-slate-800 dark:text-white mb-2">
-                                            {lang === 'en' ? `Student ${player.id}` : player.nameKey}
+                                            {lang === 'en' ? player.nameEn : player.nameZh}
                                         </h2>
                                         <div className="flex flex-wrap items-center gap-3 mt-2">
+                                            <span className="px-3 py-1 bg-slate-200 dark:bg-slate-800 rounded-md text-xs font-bold border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                                                Team {player.groupId}
+                                            </span>
                                             <span className="px-3 py-1 bg-slate-200 dark:bg-slate-800 rounded-md text-xs font-bold border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300">
                                                 Lv. {player.level}
                                             </span>
                                             <span className={`flex items-center gap-1 text-sm font-bold ${player.department.color}`}>
                                                 <DeptIcon className="w-4 h-4" />
                                                 {t[`dept_${player.department.key}`]}
-                                            </span>
-                                            <span className="text-slate-400 text-sm">|</span>
-                                            <span className="text-slate-600 dark:text-slate-300 text-sm italic">
-                                                {t[`title_${player.department.key}`]}
                                             </span>
                                         </div>
                                     </div>
@@ -394,10 +436,25 @@
                                     </div>
                                 </div>
 
-                                <div className="mt-8 pt-4 border-t border-slate-200 dark:border-slate-800 flex gap-3">
+                                <div className="mt-8 pt-4 border-t border-slate-200 dark:border-slate-800 flex flex-col xl:flex-row gap-3">
+                                    {/* YouTube 專屬的跳轉按鈕 */}
+                                    {player.youtubeId && (
+                                        <a 
+                                            href={`https://www.youtube.com/watch?v=${player.youtubeId}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex-1 py-3 bg-red-600/10 hover:bg-red-600 text-red-600 dark:text-red-500 hover:text-white font-bold rounded-lg flex items-center justify-center gap-2 transition-all border border-red-500/30 hover:border-red-600 shadow-sm"
+                                        >
+                                            <ExternalLink className="w-5 h-5" />
+                                            {t.openInYoutube}
+                                        </a>
+                                    )}
                                     <button 
                                         onClick={() => {
-                                            if(videoRef.current) {
+                                            if (player.youtubeId && iframeRef.current) {
+                                                const currentSrc = iframeRef.current.src;
+                                                iframeRef.current.src = currentSrc;
+                                            } else if (videoRef.current) {
                                                 videoRef.current.currentTime = 0;
                                                 videoRef.current.play();
                                             }
@@ -407,12 +464,6 @@
                                         <Play className="w-5 h-5 fill-current" />
                                         {t.playVideo}
                                     </button>
-                                    <button 
-                                        onClick={onClose}
-                                        className="px-6 py-3 bg-slate-100 hover:bg-red-500 text-slate-600 hover:text-white dark:bg-slate-800 dark:hover:bg-red-500 dark:text-slate-300 dark:hover:text-white font-bold rounded-lg flex items-center justify-center transition-all border border-slate-300 dark:border-slate-700 hover:border-red-500 dark:hover:border-red-500"
-                                    >
-                                        {t.returnClose}
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -421,7 +472,6 @@
             );
         }
 
-        // 將 React 元件渲染到 HTML 畫面上
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
